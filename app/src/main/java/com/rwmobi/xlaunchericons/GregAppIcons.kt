@@ -1,6 +1,4 @@
-package com.rwmobi.xlaunchericons.ui.theme
-
-import com.rwmobi.xlaunchericons.R
+package com.rwmobi.xlaunchericons
 
 val gregAppIcons: List<AppIcon> = listOf(
     AppIcon(

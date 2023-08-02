@@ -1,4 +1,4 @@
-package com.rwmobi.xlaunchericons.ui.theme
+package com.rwmobi.xlaunchericons
 
 import androidx.annotation.DrawableRes
 
