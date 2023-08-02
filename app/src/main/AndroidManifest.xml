@@ -6,16 +6,15 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/ic_launcher_a"
+        android:label="@string/app_name_a"
+        android:roundIcon="@mipmap/ic_launcher_a_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.XLauncherIcons"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.XLauncherIcons">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,24 +23,12 @@
         </activity>
 
         <activity-alias
-            android:name="com.rwmobi.xlaunchericons.MainActivityA"
-            android:enabled="false"
-            android:exported="true"
-            android:icon="@mipmap/ic_launcher_a"
-            android:label="@string/app_name_a"
-            android:targetActivity=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
-
-        <activity-alias
-            android:name="com.rwmobi.xlaunchericons.MainActivityB"
+            android:name=".MainActivityB"
             android:enabled="false"
             android:exported="true"
             android:icon="@mipmap/ic_launcher_b"
             android:label="@string/app_name_b"
+            android:roundIcon="@mipmap/ic_launcher_b_round"
             android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,11 +37,82 @@
         </activity-alias>
 
         <activity-alias
-            android:name="com.rwmobi.xlaunchericons.MainActivityC"
+            android:name=".MainActivityC"
             android:enabled="false"
             android:exported="true"
             android:icon="@mipmap/ic_launcher_c"
             android:label="@string/app_name_c"
+            android:roundIcon="@mipmap/ic_launcher_c_round"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivityD"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_d"
+            android:label="@string/app_name_d"
+            android:roundIcon="@mipmap/ic_launcher_d_round"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivityE"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_e"
+            android:label="@string/app_name_e"
+            android:roundIcon="@mipmap/ic_launcher_e_round"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivityF"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_f"
+            android:label="@string/app_name_f"
+            android:roundIcon="@mipmap/ic_launcher_f_round"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivityG"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_g"
+            android:label="@string/app_name_g"
+            android:roundIcon="@mipmap/ic_launcher_g_round"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".MainActivityH"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_h"
+            android:label="@string/app_name_h"
+            android:roundIcon="@mipmap/ic_launcher_h_round"
             android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

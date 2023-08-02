@@ -1,6 +1,11 @@
 <resources>
-    <string name="app_name">X Launcher</string>
-    <string name="app_name_a">X1 Launcher</string>
-    <string name="app_name_b">X2 Launcher</string>
-    <string name="app_name_c">X3 Launcher</string>
+    <string name="app_name_a">Greg 360</string>
+    <string name="app_name_b">Greg 45</string>
+    <string name="app_name_c">Greg 90</string>
+    <string name="app_name_d">Greg 135</string>
+    <string name="app_name_e">Greg 180</string>
+    <string name="app_name_f">Greg 225</string>
+    <string name="app_name_g">Greg 270</string>
+    <string name="app_name_h">Greg 315</string>
+
 </resources>
