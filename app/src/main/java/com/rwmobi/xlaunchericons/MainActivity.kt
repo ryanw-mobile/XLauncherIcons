@@ -62,7 +62,6 @@ fun MainScreen(
     icons: List<AppIcon>,
 ) {
     Column(modifier = modifier) {
-
         Spacer(modifier = Modifier.size(48.dp))
 
         Text(
@@ -82,7 +81,6 @@ fun MainScreen(
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
-
             icons.forEach {
                 AppIconOption(
                     modifier = Modifier
@@ -91,11 +89,9 @@ fun MainScreen(
                     appIcon = it,
                 )
             }
-
         }
     }
 }
-
 
 @Composable
 private fun AppIconOption(
@@ -160,5 +156,3 @@ private fun setIcon(context: Context, componentName: String) {
         PackageManager.DONT_KILL_APP,
     )
 }
-
-

@@ -34,4 +34,4 @@ val gregAppIcons: List<AppIcon> = listOf(
         foregroundResource = R.drawable.greg8,
     ),
 
-    )
+)
