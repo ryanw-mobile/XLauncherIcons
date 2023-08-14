@@ -15,12 +15,23 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:launchMode="singleTop"
             android:theme="@style/Theme.XLauncherIcons">
+        </activity>
+
+        <activity-alias
+            android:name=".MainActivityA"
+            android:enabled="true"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_a"
+            android:label="@string/app_name_a"
+            android:roundIcon="@mipmap/ic_launcher_a_round"
+            android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity-alias>
 
         <activity-alias
             android:name=".MainActivityB"
@@ -116,6 +127,17 @@
             android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".StartActivity"
+            android:exported="true"
+            android:targetActivity=".MainActivity">
+
+            <intent-filter>
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>

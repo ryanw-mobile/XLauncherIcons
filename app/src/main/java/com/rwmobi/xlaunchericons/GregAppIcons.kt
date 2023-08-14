@@ -2,7 +2,7 @@ package com.rwmobi.xlaunchericons
 
 val gregAppIcons: List<AppIcon> = listOf(
     AppIcon(
-        component = "com.rwmobi.xlaunchericons.MainActivity",
+        component = "com.rwmobi.xlaunchericons.MainActivityA",
         foregroundResource = R.drawable.greg1,
     ),
     AppIcon(
