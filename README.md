@@ -12,7 +12,7 @@ We can create multiple launcher icons by declaring `activity-alias` elements in`
 
 
 ### Requirement
-This Android App project was built using ***Android Studio Hedgehog | 2023.1.1 Canary 14***
+This Android App project was built using ***Android Studio Hedgehog | 2023.1.1 Beta 5***
 
 
 ### Credits
