@@ -46,4 +46,4 @@ jobs:
             echo "Checks did not pass for PR #$pr_number. Not merging."
           fi
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
