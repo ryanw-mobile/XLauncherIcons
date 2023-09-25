@@ -3,10 +3,10 @@ name: Renovate build check
 on:
   pull_request:
     branches:
-    - 'renovate/**'
+      - 'renovate/**'
   push:
     branches:
-    - 'renovate/**'
+      - 'renovate/**'
 
 jobs:
   build:
@@ -14,15 +14,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: gradle
+      - uses: actions/checkout@v4
+      - name: set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew build
+      - name: Install GitHub CLI
+        run: |
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+          sudo apt-add-repository https://cli.github.com/packages
+          sudo apt update
+          sudo apt install gh
+      - name: Automerge on successful checks
+        if: github.event_name == 'pull_request' && github.event.action == 'synchronize'
+        run: |
+          pr_number=${{ github.event.pull_request.number }}
+          # Check if all checks passed
+          checks_passed=$(gh pr checks $pr_number | grep -E '\[✓\]')
+          if [[ "$checks_passed" != "" ]]; then
+            # Merge the PR
+            gh pr merge $pr_number --merge
+            echo "Automatically merged PR #$pr_number"
+          else
+            echo "Checks did not pass for PR #$pr_number. Not merging."
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }
