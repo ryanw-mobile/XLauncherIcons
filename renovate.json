@@ -8,6 +8,9 @@
   "reviewers": [
     "ryanwong-uk"
   ],
+  "assignees": [
+    "ryanwong-uk"
+  ],
   "packageRules": [
     {
       "matchPackagePatterns": [
@@ -36,5 +39,6 @@
       ],
       "automerge": true
     }
-  ]
+  ],
+  "platformAutomerge": true
 }
