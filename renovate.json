@@ -5,6 +5,7 @@
   ],
   "commitMessagePrefix": "[chore] Renovate: ",
   "commitMessageExtra": "{{{currentValue}}} to {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}{{prettyNewMajor}}{{else}}{{#if isSingleVersion}}{{prettyNewVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}{{/if}}",
+  "assignAutomerge": true,
   "reviewers": [
     "ryanwong-uk"
   ],
@@ -29,16 +30,7 @@
         "com.google.devtools.ksp"
       ],
       "groupName": "kotlin"
-    },
-    {
-      "matchUpdateTypes": [
-        "minor",
-        "patch",
-        "pin",
-        "digest"
-      ],
-      "automerge": true
     }
   ],
-  "platformAutomerge": true
+  "automerge": true
 }
