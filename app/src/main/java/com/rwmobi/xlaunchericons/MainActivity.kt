@@ -44,10 +44,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     MainScreen(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .background(Color(0xFF161D26)),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color(0xFF161D26)),
                         icons = gregAppIcons,
                     )
                 }
@@ -77,18 +76,16 @@ fun MainScreen(
         Spacer(modifier = Modifier.size(48.dp))
 
         FlowRow(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             icons.forEach {
                 AppIconOption(
-                    modifier =
-                        Modifier
-                            .padding(16.dp)
-                            .size(54.dp),
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .size(54.dp),
                     appIcon = it,
                 )
             }
@@ -104,22 +101,21 @@ private fun AppIconOption(
     val context = LocalContext.current
 
     Image(
-        modifier =
-            modifier
-                .drawBehind {
-                    drawCircle(color = Color(0xFF536972))
-                }
-                .clip(CircleShape)
-                .clickable(
-                    enabled = true,
-                    onClick = {
-                        setIcon(
-                            context = context,
-                            componentName = appIcon.component,
-                        )
-                    },
-                )
-                .padding(all = 4.dp),
+        modifier = modifier
+            .drawBehind {
+                drawCircle(color = Color(0xFF536972))
+            }
+            .clip(CircleShape)
+            .clickable(
+                enabled = true,
+                onClick = {
+                    setIcon(
+                        context = context,
+                        componentName = appIcon.component,
+                    )
+                },
+            )
+            .padding(all = 4.dp),
         painter = painterResource(id = appIcon.foregroundResource),
         contentDescription = null,
     )
@@ -133,10 +129,9 @@ private fun AppIconOption(
 fun GreetingPreview() {
     XLauncherIconsTheme {
         MainScreen(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xFF161D26)),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFF161D26)),
             icons = gregAppIcons,
         )
     }
