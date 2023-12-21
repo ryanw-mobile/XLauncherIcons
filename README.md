@@ -1,4 +1,4 @@
-# Changing the Android App Icon Programmatically ![Gradle Check on Main](https://github.com/ryanw-mobile/XLauncherIcons/actions/workflows/main_check.yml/badge.svg)
+# Changing the Android App Icon Programmatically ![Gradle Check on Main](https://github.com/ryanw-mobile/XLauncherIcons/actions/workflows/main_build.yml/badge.svg)
 
 <div style="text-align:center"><img src="Screenshot_20230802_212139_framed.png" /></div>
 
