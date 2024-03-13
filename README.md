@@ -14,9 +14,13 @@ in` AndroidManifest.xml`. The effect of changing the app icon is achieved by dis
 one and enabling a new one. While some say this does not work with things like crashlytics, deep
 link, etc., indeed this is how Reddit implements this feature in their Android App.
 
-### Requirement
+### Let's download and run it!
 
-This Android App project was built using ***Android Studio Iguana | 2023.2.1 Canary 18***
+This project was configured to build using Android Studio Iguana | 2023.2.1. You will need to have
+Java 17 to build the project.
+
+Alternatively, you can find the ready-to-install APKs and App Bundles under
+the [release section](https://github.com/ryanw-mobile/XLauncherIcons/releases).
 
 ### Credits
 
