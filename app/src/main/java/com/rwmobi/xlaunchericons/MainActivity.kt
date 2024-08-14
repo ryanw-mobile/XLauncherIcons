@@ -29,6 +29,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,7 +67,7 @@ fun MainScreen(
 
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = "Subscribe to greg for only $1",
+            text = stringResource(R.string.subscribe_heading),
             color = Color.LightGray,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
