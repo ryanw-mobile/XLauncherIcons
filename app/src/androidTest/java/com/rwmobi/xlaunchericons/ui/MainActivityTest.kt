@@ -28,7 +28,9 @@ class MainActivityTest {
 
     @Test
     fun appNavigationLayoutTest() {
+        // Quick test for Renovate to assert the App can start up properly
         with(mainActivityTestRobot) {
+            assertSubscribeHeadingIsDisplayed()
         }
     }
 }
