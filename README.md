@@ -1,4 +1,4 @@
-# Changing the Android App Icon Programmatically ![Gradle Build](https://github.com/ryanw-mobile/XLauncherIcons/actions/workflows/main_build.yml/badge.svg)
+# Changing the Android App Icon Programmatically <br/>![Gradle Build](https://github.com/ryanw-mobile/XLauncherIcons/actions/workflows/main_build.yml/badge.svg) [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
 
 <div style="text-align:center"><img src="Screenshot_20230802_212139_framed.png" /></div>
 
