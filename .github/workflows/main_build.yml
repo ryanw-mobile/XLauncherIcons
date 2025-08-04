@@ -13,13 +13,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Decode Keystore
+        id: decode_keystore
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: 'release.jks'
+          encodedString: ${{ secrets.KEYSTORE }}
+
       - uses: actions/checkout@v4
 
-      - name: set up JDK 21
+      - name: set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'corretto'
-          java-version: '21'
+          java-version: '17'
           cache: gradle
 
       - name: Grant execute permission for gradlew
@@ -27,3 +34,9 @@ jobs:
 
       - name: Gradle build
         run: ./gradlew build --no-daemon
+        env:
+          CI: 'true'
+          KEYSTORE_LOCATION: ${{ steps.decode_keystore.outputs.filePath }}
+          CI_ANDROID_KEYSTORE_ALIAS: ${{ secrets.CI_ANDROID_KEYSTORE_ALIAS }}
+          CI_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD: ${{ secrets.CI_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD }}
+          CI_ANDROID_KEYSTORE_PASSWORD: ${{ secrets.CI_ANDROID_KEYSTORE_PASSWORD }}
