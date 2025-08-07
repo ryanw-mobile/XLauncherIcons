@@ -37,4 +37,4 @@ jobs:
         run: xvfb-run ./gradlew :app:pixel2Api34DebugAndroidTest -Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect -Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true -Pandroid.experimental.testOptions.managedDevices.maxConcurrentDevices=1 -Pandroid.experimental.testOptions.managedDevices.setupTimeoutMinutes=180
 
       - name: Gradle Check
-        run: ./gradlew check assembleDebug --no-daemon
+        run: ./gradlew check assembleDebug
