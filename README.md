@@ -16,8 +16,8 @@ link, etc., indeed this is how Reddit implements this feature in their Android A
 
 ### Let's download and run it!
 
-This project was configured to build using Android Studio Narwhal Feature Drop | 2025.1.2 RC 1. You will need to have
-Java 17 to build the project.
+This project was configured to build using Android Studio Otter 3 Feature Drop | 2025.2.3. You will need to have
+Java 21 to build the project.
 
 Alternatively, you can find the ready-to-install APKs and App Bundles under
 the [release section](https://github.com/ryanw-mobile/XLauncherIcons/releases).
