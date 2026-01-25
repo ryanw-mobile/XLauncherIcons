@@ -1,5 +1,5 @@
 [versions]
-agp = "8.13.2"
+agp = "9.0.0"
 kotlin = "2.3.0"
 core-ktx = "1.17.0"
 junit = "4.13.2"
@@ -38,7 +38,6 @@ androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
-kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
