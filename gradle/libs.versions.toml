@@ -9,7 +9,7 @@ lifecycle = "2.10.0"
 activity-compose = "1.12.3"
 compose-bom = "2026.01.01"
 testRules = "1.7.0"
-kotlinter = "5.4.0"
+kotlinter = "5.4.2"
 detekt = "1.23.8"
 
 # App configurations, not dependencies
