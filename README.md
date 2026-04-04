@@ -36,6 +36,7 @@ please [subscribe to greg for just 10¢ a day](https://x.com/greg16676935420)
 * [AndroidX Test Ext JUnit](https://developer.android.com/jetpack/androidx/releases/test) - Apache 2.0 - JUnit extensions for AndroidX tests
 * [AndroidX Espresso](https://developer.android.com/training/testing/espresso) - Apache 2.0 - UI testing framework for Android
 * [AndroidX Lifecycle](https://developer.android.com/jetpack/androidx/releases/lifecycle) - Apache 2.0 - Lifecycle-aware components
+* [AndroidX Lifecycle ViewModel Compose](https://developer.android.com/jetpack/androidx/releases/lifecycle) - Apache 2.0 - ViewModel integration with Compose
 * [AndroidX Activity Compose](https://developer.android.com/jetpack/androidx/releases/activity) - Apache 2.0 - Jetpack Compose integration with Activity
 * [Jetpack Compose BOM](https://developer.android.com/jetpack/compose/bom) - Apache 2.0 - Compose Bill of Materials for consistent versioning
 * [Jetpack Compose UI](https://developer.android.com/jetpack/compose/ui) - Apache 2.0 - Compose UI core components
@@ -46,6 +47,8 @@ please [subscribe to greg for just 10¢ a day](https://x.com/greg16676935420)
 * [Jetpack Compose Test JUnit4](https://developer.android.com/jetpack/compose/testing) - Apache 2.0 - Compose test support with JUnit4
 * [Jetpack Compose Material3](https://developer.android.com/jetpack/compose/material3) - Apache 2.0 - Material Design 3 components for Compose
 * [AndroidX Test Rules](https://developer.android.com/jetpack/androidx/releases/test) - Apache 2.0 - AndroidX testing rules
+* [MockK](https://mockk.io/) - Apache 2.0 - Mocking library for Kotlin
+* [Kotlinx Coroutines Test](https://github.com/Kotlin/kotlinx.coroutines/tree/master/kotlinx-coroutines-test) - Apache 2.0 - Coroutines testing library
 
 ### Plugins
 
