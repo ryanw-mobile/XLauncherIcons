@@ -68,9 +68,12 @@ class MainActivity : ComponentActivity() {
                         .safeContentPadding(),
                     color = Color(0xFF161D26),
                 ) {
+                    val activeIconComponent by viewModel.activeIconComponent.collectAsState()
+
                     MainScreen(
                         modifier = Modifier.fillMaxWidth(),
-                        viewModel = viewModel,
+                        activeIconComponent = activeIconComponent,
+                        onIconClick = { viewModel.setIcon(it) },
                     )
                 }
             }
@@ -82,10 +85,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    viewModel: MainViewModel,
+    activeIconComponent: String?,
+    onIconClick: (String) -> Unit,
 ) {
-    val activeIconComponent by viewModel.activeIconComponent.collectAsState()
-
     Column(modifier = modifier) {
         Spacer(modifier = Modifier.size(48.dp))
 
@@ -113,7 +115,7 @@ fun MainScreen(
                         .size(54.dp),
                     appIcon = it,
                     isActive = it.component == activeIconComponent,
-                    onClick = { viewModel.setIcon(it.component) },
+                    onClick = { onIconClick(it.component) },
                 )
             }
         }
@@ -167,36 +169,11 @@ fun GreetingPreview() {
                 .background(Color(0xFF161D26)),
             color = Color(0xFF161D26),
         ) {
-            // Mock ViewModel/IconManager or just hardcode some state for preview
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Spacer(modifier = Modifier.size(48.dp))
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(R.string.subscribe_heading),
-                    color = Color.LightGray,
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                )
-                Spacer(modifier = Modifier.size(48.dp))
-                FlowRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                ) {
-                    gregAppIcons.forEach {
-                        AppIconOption(
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .size(54.dp),
-                            appIcon = it,
-                            isActive = it.component == "com.rwmobi.xlaunchericons.MainActivityA",
-                            onClick = {},
-                        )
-                    }
-                }
-            }
+            MainScreen(
+                modifier = Modifier.fillMaxWidth(),
+                activeIconComponent = "com.rwmobi.xlaunchericons.MainActivityA",
+                onIconClick = {},
+            )
         }
     }
 }
