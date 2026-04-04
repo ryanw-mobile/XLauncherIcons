@@ -33,4 +33,16 @@ class MainActivityTest {
             assertSubscribeHeadingIsDisplayed()
         }
     }
+
+    @Test
+    fun iconSelectionTest() {
+        with(mainActivityTestRobot) {
+            assertSubscribeHeadingIsDisplayed()
+            assertIconIsDisplayed("com.rwmobi.xlaunchericons.MainActivityA")
+            clickOnIcon("com.rwmobi.xlaunchericons.MainActivityB")
+            // Note: Since setComponentEnabledSetting might trigger app restart or process kill,
+            // we use DONT_KILL_APP, but it's still hard to verify side effects in a simple UI test.
+            // At least we verify the click doesn't crash and UI remains responsive.
+        }
+    }
 }
