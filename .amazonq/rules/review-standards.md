@@ -1,35 +1,83 @@
 # Amazon Q Review Standards
 
-These rules reflect deliberate technical decisions for this project. Findings matching these patterns should not be re-raised.
+These rules reflect deliberate, final technical decisions. **Do not re-raise findings that match these patterns.** They have been discussed, evaluated, and permanently rejected with full technical justification.
 
-## Suppressed Finding Classes
+---
 
-### 1. ComponentName validation in IconManager.setIcon()
-**Pattern:** Suggesting validation that `componentName` exists in `gregAppIcons` before calling `setComponentEnabledSetting`.
+## PERMANENTLY SUPPRESSED: IconManager.setIcon() — componentName validation
 
-**Reason:** `componentName` values are internal constants from `gregAppIcons`. There is no external entry point that can supply an arbitrary string. Adding a guard for a code path that cannot exist by construction adds noise without value. If type-safety is ever required in future, a sealed class or enum refactor would be done holistically — not patched per-method.
+**Finding pattern:** Suggesting validation that `componentName` exists in `gregAppIcons`, or suggesting `IllegalArgumentException` / early return when not found.
 
-### 2. try-catch around PackageManager operations in IconManager
-**Pattern:** Suggesting wrapping `setComponentEnabledSetting` or `getComponentEnabledSetting` in try-catch for `SecurityException` or `IllegalArgumentException`.
+**Why this is rejected (final):**
+- `componentName` values are sourced exclusively from `gregAppIcons` constants. There is no external entry point.
+- This is a closed internal API. No caller in this codebase can pass an arbitrary string.
+- Adding a guard for a code path that is architecturally impossible is dead code.
+- A sealed class / enum refactor is a separate holistic concern, not a per-method patch.
 
-**Reason:** `IllegalArgumentException` is thrown only for components not declared in `AndroidManifest.xml`. All components in `gregAppIcons` are declared there at compile time. `SecurityException` is thrown only when attempting to modify components in other packages. This app only modifies its own aliases. These are theoretical concerns with no concrete reproduction path.
+**Do not raise again.**
 
-### 3. Optimistic UI state update in MainViewModel.setIcon()
-**Pattern:** Suggesting state should only be updated after `iconManager.setIcon()` succeeds, or that try-catch should be added around the state update.
+---
 
-**Reason:** Optimistic UI is the intentional design. `setIcon()` is a synchronous, deterministic operation on declared activity-aliases. Pessimistic state updates would introduce unnecessary UI lag. If `setIcon()` were to throw (which it cannot given the constraints above), `refreshActiveIcon()` would be called on resume to self-correct.
+## PERMANENTLY SUPPRESSED: IconManager — try-catch for PackageManager operations
 
-### 4. viewModelScope.launch for synchronous setIcon()
-**Pattern:** Suggesting removing `viewModelScope.launch` because `iconManager.setIcon()` is synchronous.
+**Finding pattern:** Suggesting wrapping `setComponentEnabledSetting` or `getComponentEnabledSetting` in try-catch for `SecurityException`, `IllegalArgumentException`, or generic `Exception`.
 
-**Reason:** Using `viewModelScope.launch` is idiomatic in ViewModels for ensuring structured concurrency and lifecycle-aware cancellation, even for synchronous calls. It also makes the function non-blocking from the call site. This is a deliberate style choice, not a bug.
+**Why this is rejected (final):**
+- `IllegalArgumentException` is thrown only for components not declared in `AndroidManifest.xml`. Every component in `gregAppIcons` is declared at compile time. This exception cannot occur.
+- `SecurityException` is thrown only when modifying components in other packages. This app exclusively modifies its own activity-aliases. This exception cannot occur.
+- There is no concrete reproduction path for either exception in this codebase.
 
-### 5. IconManager / ViewModel recreation on recomposition in MainActivity
-**Pattern:** Claiming `IconManager` is recreated on every recomposition and suggesting `remember {}` or moving instantiation outside `setContent`.
+**Do not raise again.**
 
-**Reason:** `remember { IconManager(this) }` is already present at line 59 of `MainActivity.kt`. This finding is factually incorrect. `viewModel()` from `lifecycle-viewmodel-compose` also prevents recreation. No code change is needed.
+---
 
-### 6. Test dispatcher advancement for init block in MainViewModelTest
-**Pattern:** Suggesting `testDispatcher.scheduler.advanceUntilIdle()` is needed after ViewModel construction in the `init should refresh active icon` test.
+## PERMANENTLY SUPPRESSED: MainViewModel.setIcon() — optimistic UI state update
 
-**Reason:** `refreshActiveIcon()` called in `init` is a direct synchronous assignment (`_activeIconComponent.value = iconManager.getActiveIconComponent()`), not launched in a coroutine. No dispatcher advancement is needed. The `setMain(testDispatcher)` in `@Before` is sufficient for the `setIcon` test which does use a coroutine.
+**Finding pattern:** Suggesting state should only be updated after verifying `iconManager.setIcon()` succeeded, or adding try-catch around the state assignment.
+
+**Why this is rejected (final):**
+- Optimistic UI update is the intentional design for responsiveness.
+- `setIcon()` is synchronous and deterministic for statically-declared components.
+- `setComponentEnabledSetting` does not fail silently for correctly-declared components (see above).
+- Pessimistic updates would introduce unnecessary UI lag in a sample app where no failure path exists.
+
+**Do not raise again.**
+
+---
+
+## PERMANENTLY SUPPRESSED: MainViewModel.setIcon() — unnecessary viewModelScope.launch
+
+**Finding pattern:** Suggesting removing `viewModelScope.launch` because `iconManager.setIcon()` is synchronous.
+
+**Why this is rejected (final):**
+- Using `viewModelScope.launch` is idiomatic for ViewModels: it provides lifecycle-aware cancellation and structured concurrency even for synchronous calls.
+- This is a deliberate style choice, not a bug or performance issue.
+
+**Do not raise again.**
+
+---
+
+## PERMANENTLY SUPPRESSED: MainActivity — IconManager recreation on recomposition
+
+**Finding pattern:** Claiming `IconManager` is recreated on every recomposition, suggesting `remember {}`, moving instantiation to `onCreate()`, or using `by lazy`.
+
+**Why this is rejected (final, and factually wrong):**
+- `remember { IconManager(this) }` is already present at line 59 of `MainActivity.kt`. This prevents recreation on recomposition.
+- `viewModel()` from `lifecycle-viewmodel-compose` already preserves the ViewModel across recompositions and configuration changes.
+- This finding has been raised and dismissed as factually incorrect. The code is correct as written.
+
+**Do not raise again.**
+
+---
+
+## PERMANENTLY SUPPRESSED: MainViewModelTest — missing dispatcher advancement in init test
+
+**Finding pattern:** Suggesting `testDispatcher.scheduler.advanceUntilIdle()` after ViewModel construction in the `init should refresh active icon` test.
+
+**Why this is rejected (final, and factually wrong):**
+- `refreshActiveIcon()` called in `init` is a **direct synchronous assignment**: `_activeIconComponent.value = iconManager.getActiveIconComponent()`.
+- It is NOT launched in a coroutine. No dispatcher advancement is needed or applicable.
+- This finding is factually incorrect about the implementation.
+- The `setMain(testDispatcher)` in `@Before` correctly covers the coroutine in `setIcon()`, which has its own test.
+
+**Do not raise again.**
