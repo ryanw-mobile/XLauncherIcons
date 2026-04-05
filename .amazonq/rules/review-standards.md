@@ -1,92 +1,67 @@
-# Amazon Q Review Standards
+# XLauncherIcons Project Rules
 
-These rules reflect deliberate, final technical decisions for this project.
-**Do not re-raise any finding that matches a pattern below. They have been evaluated, discussed, and permanently rejected.**
+This file defines the authoritative coding standards and intentional design decisions for this project. These are not suggestions — they are the established patterns all code in this project follows. Do not raise findings that conflict with these standards.
 
----
+## Project Context
 
-## SUPPRESSED: IconManager.setIcon() — componentName validation / early return
-
-**Patterns:** Suggesting validation that `componentName` exists in `gregAppIcons`; suggesting early return or `IllegalArgumentException` if not found; suggesting sealed class or enum for type safety.
-
-**Rejection:** `componentName` is sourced exclusively from `gregAppIcons` constants. There is no external entry point. This is a closed internal API. Adding a guard for an architecturally impossible code path is dead code and misleads readers into thinking external callers exist. A sealed class / enum refactor is a separate holistic concern and is not a per-method patch. **Do not raise again.**
+XLauncherIcons is a **sample/demonstration Android app**. It is not a production service. Defensive coding patterns appropriate for public APIs or production systems are intentionally omitted where they would add noise without value.
 
 ---
 
-## SUPPRESSED: IconManager — try-catch on setComponentEnabledSetting / getComponentEnabledSetting
+## IconManager: Internal API with Closed Input Set
 
-**Patterns:** Suggesting wrapping PackageManager calls in try-catch for `SecurityException`, `IllegalArgumentException`, or generic `Exception`.
+`IconManager.setIcon(componentName: String)` and `IconManager.getActiveIconComponent()` are **internal methods**. All `componentName` values are sourced exclusively from the `gregAppIcons` compile-time constant list. No external caller can supply arbitrary strings.
 
-**Rejection:** `IllegalArgumentException` from `setComponentEnabledSetting` occurs only for components not declared in `AndroidManifest.xml`. Every component in `gregAppIcons` is declared at compile time — this exception cannot occur. `SecurityException` occurs only when modifying components in other packages — this app exclusively modifies its own activity-aliases. Neither exception has a concrete reproduction path. The same applies to `getComponentEnabledSetting`. **Do not raise again.**
-
----
-
-## SUPPRESSED: IconManager.getActiveIconComponent() — fallback to first icon
-
-**Patterns:** Suggesting the `?: gregAppIcons.firstOrNull()?.component` fallback is wrong or causes incorrect UI state; suggesting return `null` instead of falling back to the first icon.
-
-**Rejection:** The fallback is intentional. On a fresh install or after a system restore, no alias has been explicitly enabled — the system uses the first declared activity-alias by default. Returning the first icon matches system behaviour and prevents the UI showing no selection. Returning `null` would cause an unnecessary "nothing selected" state that doesn't reflect reality. **Do not raise again.**
+- **No validation of `componentName` against `gregAppIcons` is required or desired.** The architecture enforces correctness — adding a runtime guard implies external callers exist, which they do not.
+- **No try-catch is required around `setComponentEnabledSetting` or `getComponentEnabledSetting`.** All components are declared in `AndroidManifest.xml` at compile time (eliminating `IllegalArgumentException`). The app only modifies its own activity-aliases (eliminating `SecurityException`). These exceptions have no reproduction path.
+- **The `?: gregAppIcons.firstOrNull()?.component` fallback in `getActiveIconComponent()` is intentional.** On fresh install, no alias is explicitly enabled — the system uses the first declared activity-alias. The fallback matches that system behaviour and prevents the UI from showing no selection.
 
 ---
 
-## SUPPRESSED: MainViewModel.setIcon() — optimistic UI state update
+## MainViewModel: Optimistic UI Pattern
 
-**Patterns:** Suggesting state should only update after verifying `setIcon()` succeeded; suggesting try-catch around the state assignment; suggesting calling `refreshActiveIcon()` after `setIcon()` instead of directly setting state.
+`MainViewModel.setIcon()` updates `_activeIconComponent` immediately after calling `iconManager.setIcon()`, without waiting for verification.
 
-**Rejection:** Optimistic UI is the intentional design for responsiveness. `setIcon()` is synchronous and deterministic for statically-declared components. `setComponentEnabledSetting` does not fail silently for correctly-declared aliases. There is no failure path to guard against. Re-querying state immediately after calling `setComponentEnabledSetting` is also unreliable — the system may not have propagated the change yet. **Do not raise again.**
-
----
-
-## SUPPRESSED: MainViewModel.setIcon() — unnecessary viewModelScope.launch / should use Dispatchers.IO
-
-**Patterns:** Suggesting removing `viewModelScope.launch` because `setIcon()` is synchronous; suggesting the call should be moved to `Dispatchers.IO`; suggesting the coroutine creates a false impression of async behaviour or race conditions.
-
-**Rejection:** `viewModelScope.launch` is idiomatic in ViewModels: it provides lifecycle-aware cancellation and structured concurrency. The single `setComponentEnabledSetting` IPC call has negligible overhead that does not warrant a dispatcher switch. Adding `withContext(Dispatchers.IO)` would introduce complexity without measurable benefit in a sample app. This is a deliberate style choice. **Do not raise again.**
+- **This is the intentional optimistic UI pattern**, chosen for responsiveness.
+- `setComponentEnabledSetting` is deterministic for statically-declared components. There is no failure path to guard against.
+- **No try-catch, no post-call `refreshActiveIcon()`, and no state rollback logic is required.**
+- Re-querying state immediately after `setComponentEnabledSetting` is also unreliable — the system may not have propagated the change yet, making optimistic update the correct approach.
 
 ---
 
-## SUPPRESSED: IconManager.setIcon() — loop causes UI freeze / synchronous blocking
+## MainViewModel: viewModelScope.launch for setIcon()
 
-**Patterns:** Claiming the `forEach` loop over `setComponentEnabledSetting` calls will freeze the UI or cause ANRs.
+`MainViewModel.setIcon()` uses `viewModelScope.launch` even though `iconManager.setIcon()` is synchronous.
 
-**Rejection:** The number of activity-aliases is fixed and small (defined at compile time in `gregAppIcons`). The per-call overhead is negligible binder IPC. This cannot cause an ANR or perceptible freeze. **Do not raise again.**
-
----
-
-## SUPPRESSED: MainActivity — IconManager recreation on recomposition / memory leak
-
-**Patterns:** Claiming `IconManager` is recreated on every recomposition; suggesting `remember {}`, `by lazy`, moving to `onCreate()`, or using `by viewModels()` delegation.
-
-**Rejection (factually incorrect finding):** `remember { IconManager(this) }` is already present at line 59 of `MainActivity.kt`. Recreation on recomposition does not occur. `viewModel()` from `lifecycle-viewmodel-compose` preserves the ViewModel across recompositions and configuration changes. This finding is incorrect. **Do not raise again.**
+- **This is intentional.** `viewModelScope.launch` provides lifecycle-aware cancellation and structured concurrency. It is the idiomatic ViewModel pattern for all state-mutating operations.
+- The IPC overhead of a single `setComponentEnabledSetting` call is negligible. `Dispatchers.IO` is not needed.
+- **Do not suggest removing the coroutine wrapper or adding `withContext(Dispatchers.IO)`.**
 
 ---
 
-## SUPPRESSED: MainActivity — remember {} context reference becoming stale
+## MainActivity: IconManager and ViewModel Instantiation
 
-**Patterns:** Claiming the `Context` reference inside `remember { IconManager(this) }` could become stale after Activity destruction; suggesting IconManager be created as a class field instead.
+`IconManager` is instantiated as `remember { IconManager(this) }` inside `setContent`. `MainViewModel` is obtained via `viewModel(factory = ...)`.
 
-**Rejection:** `remember {}` is scoped to the composition, which is destroyed with the Activity. The `Context` (`this` = `ComponentActivity`) is never outlived by its `remember`-ed objects. There is no stale reference scenario. Moving instantiation to a class field provides no lifecycle benefit here. **Do not raise again.**
-
----
-
-## SUPPRESSED: MainActivity — missing `remember` import
-
-**Patterns:** Suggesting `import androidx.compose.runtime.remember` needs to be added.
-
-**Rejection (factually incorrect finding):** `import androidx.compose.runtime.remember` is already present in `MainActivity.kt`. **Do not raise again.**
+- **`remember { }` prevents recreation on recomposition.** This is correct and intentional.
+- **`viewModel()` from `lifecycle-viewmodel-compose` preserves the ViewModel across recompositions and configuration changes.**
+- The `Context` inside `remember { IconManager(this) }` does not become stale — `remember` is scoped to the composition, which is destroyed with the Activity. There is no lifecycle mismatch.
+- `import androidx.compose.runtime.remember` is already present in `MainActivity.kt`.
+- **Do not suggest moving instantiation to `onCreate()`, using `by lazy`, using `by viewModels()`, or any alternative. The current pattern is correct.**
 
 ---
 
-## SUPPRESSED: MainViewModelTest — missing dispatcher advancement in init test
+## setComponentEnabledSetting Loop Performance
 
-**Patterns:** Suggesting `testDispatcher.scheduler.advanceUntilIdle()` is needed after ViewModel construction in the `init should refresh active icon` test.
+`IconManager.setIcon()` iterates over `gregAppIcons` and calls `setComponentEnabledSetting` for each entry.
 
-**Rejection (factually incorrect finding):** `refreshActiveIcon()` in `init` is a direct synchronous assignment — `_activeIconComponent.value = iconManager.getActiveIconComponent()` — not launched in a coroutine. No dispatcher advancement is needed or applicable. `setMain(testDispatcher)` in `@Before` correctly covers the coroutine in `setIcon()`, which has its own separate test. **Do not raise again.**
+- The list size is fixed and small (defined at compile time). This loop cannot cause ANR or perceptible UI freeze.
+- **Do not flag this as a performance or threading concern.**
 
 ---
 
-## SUPPRESSED: MainViewModelTest — relaxed mock causes false positives
+## Unit Tests: MainViewModelTest
 
-**Patterns:** Claiming the relaxed mock on `iconManager` means `getActiveIconComponent()` returns `null` in the init test, making the test pass even if `refreshActiveIcon()` is broken; suggesting mocking `getActiveIconComponent()` for the init block.
-
-**Rejection:** The `init should refresh active icon` test explicitly stubs `getActiveIconComponent()` via `every { iconManager.getActiveIconComponent() } returns expectedComponent` before constructing the ViewModel. The relaxed mock default is never reached in that test. The test correctly verifies the intended behaviour. **Do not raise again.**
+- The `init should refresh active icon` test stubs `getActiveIconComponent()` explicitly before constructing the ViewModel. The relaxed mock default is never reached. **No `testDispatcher.scheduler.advanceUntilIdle()` is needed** — `refreshActiveIcon()` in `init` is a direct synchronous assignment, not a coroutine.
+- The `setIcon should call iconManager and update state` test already calls `testDispatcher.scheduler.advanceUntilIdle()` and verifies both the `iconManager.setIcon()` call and the resulting state. **The test coverage is complete and correct as written.**
+- **Do not suggest modifications to these tests.**
