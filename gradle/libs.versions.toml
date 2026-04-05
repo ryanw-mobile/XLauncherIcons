@@ -12,7 +12,7 @@ testRules = "1.7.0"
 kotlinter = "5.4.2"
 detekt = "1.23.8"
 mockk = "1.13.17"
-kotlinx-coroutines-test = "1.10.1"
+kotlinx-coroutines-test = "1.10.2"
 
 # App configurations, not dependencies
 minSdk = "26"
