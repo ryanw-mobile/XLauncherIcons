@@ -13,9 +13,17 @@
 
 ### Core Architecture & Logic
 The app defines multiple `<activity-alias>` elements in `AndroidManifest.xml`, each targeting the same `MainActivity` but with different `android:icon` and `android:label` attributes.
-The switching logic is implemented in `MainActivity.kt` using the `PackageManager.setComponentEnabledSetting` API. When a user selects a new icon:
-1. The currently active `activity-alias` is disabled (`COMPONENT_ENABLED_STATE_DISABLED`).
-2. The selected `activity-alias` is enabled (`COMPONENT_ENABLED_STATE_ENABLED`).
+
+The core logic is structured following MVVM principles:
+- **IconManager**: Encapsulates `PackageManager` logic for enabling/disabling `activity-alias` components and querying the active icon.
+- **MainViewModel**: Manages the UI state, specifically the currently active icon component name, and coordinates icon switches via the `IconManager`.
+- **MainActivity**: Serves as the entry point, initializes the `ViewModel`, and collects its state.
+- **MainScreen**: A stateless Composable that renders the UI based on the state provided by `MainActivity`.
+
+When a user selects a new icon:
+1. The `MainViewModel` calls `IconManager.setIcon()`.
+2. The `IconManager` disables all other aliases and enables the selected one using `PackageManager.setComponentEnabledSetting`.
+3. The UI state is updated, providing visual feedback (a border) around the selected icon.
 
 ## Building and Running
 The project uses the Gradle wrapper (`./gradlew`).
@@ -45,6 +53,6 @@ The project uses GitHub Actions for CI (defined in `.github/workflows/main_build
 - `gradle/libs.versions.toml`: Centralized dependency management.
 
 ### Testing Practices
-- **Unit Tests:** Located in `app/src/test`.
-- **Instrumented Tests:** Located in `app/src/androidTest`, primarily testing UI interactions with Compose.
+- **Unit Tests**: Located in `app/src/test`. These tests verify the business logic in `MainViewModel` using **MockK** and **kotlinx-coroutines-test**.
+- **Instrumented Tests**: Located in `app/src/androidTest`, primarily testing UI interactions with Compose using the **Robot Pattern**.
 - **Managed Devices:** Gradle Managed Devices are configured for CI testing (e.g., `pixel2Api35`).

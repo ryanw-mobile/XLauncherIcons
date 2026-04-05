@@ -1,37 +1,39 @@
 package com.rwmobi.xlaunchericons
 
+private const val BASE_PACKAGE = "com.rwmobi.xlaunchericons"
+
 val gregAppIcons: List<AppIcon> =
     listOf(
         AppIcon(
-            component = "com.rwmobi.xlaunchericons.MainActivityA",
+            component = "$BASE_PACKAGE.MainActivityA",
             foregroundResource = R.drawable.greg1,
         ),
         AppIcon(
-            component = "com.rwmobi.xlaunchericons.MainActivityB",
+            component = "$BASE_PACKAGE.MainActivityB",
             foregroundResource = R.drawable.greg2,
         ),
         AppIcon(
-            component = "com.rwmobi.xlaunchericons.MainActivityC",
+            component = "$BASE_PACKAGE.MainActivityC",
             foregroundResource = R.drawable.greg3,
         ),
         AppIcon(
-            component = "com.rwmobi.xlaunchericons.MainActivityD",
+            component = "$BASE_PACKAGE.MainActivityD",
             foregroundResource = R.drawable.greg4,
         ),
         AppIcon(
-            component = "com.rwmobi.xlaunchericons.MainActivityE",
+            component = "$BASE_PACKAGE.MainActivityE",
             foregroundResource = R.drawable.greg5,
         ),
         AppIcon(
-            component = "com.rwmobi.xlaunchericons.MainActivityF",
+            component = "$BASE_PACKAGE.MainActivityF",
             foregroundResource = R.drawable.greg6,
         ),
         AppIcon(
-            component = "com.rwmobi.xlaunchericons.MainActivityG",
+            component = "$BASE_PACKAGE.MainActivityG",
             foregroundResource = R.drawable.greg7,
         ),
         AppIcon(
-            component = "com.rwmobi.xlaunchericons.MainActivityH",
+            component = "$BASE_PACKAGE.MainActivityH",
             foregroundResource = R.drawable.greg8,
         ),
     )
