@@ -11,7 +11,7 @@ compose-bom = "2026.09.00"
 testRules = "1.7.0"
 kotlinter = "5.7.0"
 detekt = "1.23.8"
-mockk = "1.14.11"
+mockk = "1.14.12"
 kotlinx-coroutines-test = "1.11.0"
 
 # App configurations, not dependencies
